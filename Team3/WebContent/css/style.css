@@ -414,7 +414,9 @@ code {
   word-break: break-word; }
   a > code {
     color: inherit; }
-
+.join {
+	font-color: #fff;
+}
 kbd {
   padding: 0.2rem 0.4rem;
   font-size: 87.5%;
