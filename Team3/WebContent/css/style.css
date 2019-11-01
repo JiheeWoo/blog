@@ -414,9 +414,7 @@ code {
   word-break: break-word; }
   a > code {
     color: inherit; }
-.join {
-	font-color: #fff;
-}
+
 kbd {
   padding: 0.2rem 0.4rem;
   font-size: 87.5%;
@@ -9173,7 +9171,7 @@ textarea.form-control {
   visibility: hidden; }
 
 .bg-primary {
-  background: #82ae46 !important; }
+  background: #212529 !important; }
 
 .bg-black {
   background: #000000 !important; }
