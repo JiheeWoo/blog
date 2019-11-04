@@ -115,55 +115,39 @@
  <form action="#" method="post" enctype="multipart/form-data" name="blog_write">
   <table>
   <tr>
-  <td class="td_left"><label for="board_name" >글쓴이</label></td>
+  <td class="td_left"><label for="board_name" class="btn btn-primary py-2 px-3">글쓴이</label></td>
   <td class="td_right"><input type="text" name="board_name" id="board_name" required="required" /></td>
   </tr>
   
   <tr>
-  <td class="td_left"><label for="board_pass">비밀번호</label></td>
+  <td class="td_left"><label for="board_pass" class="btn btn-primary py-2 px-3">비밀번호</label></td>
   <td class="td_right"><input name="board_pass" type="password" id ="board_pass" required="required"/></td>
   </tr>
   
   <tr>
-  <td class="td_left"><label for="board_subject">제목</label></td>
+  <td class="td_left"><label for="board_subject" class="btn btn-primary py-2 px-3">제목</label></td>
   <td class="td_right"><input name="board_subject" type="text" id="board_subject" required="required"/></td>
   </tr>
   
   <tr>
-  <td class="td_left"><label for="board_content">내용</label></td>
+  <td class="td_left"><label for="board_content" class="btn btn-primary py-2 px-3">내용</label></td>
   <td><textarea id="board_content" name="board_content" cols="40" rows="15" required="required"></textarea></td>
   </tr>
   
   <tr>
-  <td class="td_left"><label for="board_file">파일첨부</label></td>
+  <td class="td_left"><label for="board_file" class="btn btn-primary py-2 px-3">파일첨부</label></td>
   <td class=" td_right"><input name="board_file" type="file" id="board_file" required="required" /></td>
   </tr>
   </table>
   <section id="commandCell">
-  <input type="submit" value="등록">&nbsp;&nbsp;
-  <input type="reset" value="다시쓰기"/> 
-  <input type="button" value="뒤로" onclick="history.back()">
+ <a href="blog-single.html" class="btn btn-primary py-2 px-3">등록</a>
+<a href="blog_write.jsp" class="btn btn-primary py-2 px-3">다시쓰기</a>
+<a href="beer_blog.html" class="btn btn-primary py-2 px-3">뒤로</a>
+
   </section>
     </form>
     </section>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
     
     <footer class="ftco-footer ftco-section bg-light">
       <div class="container">
