@@ -44,7 +44,7 @@ public class BlogWriteProAction implements Action {
 				"UTF-8",	// 한글 파일명에 대한 인코딩 방식 지정
 				new DefaultFileRenamePolicy()	// 동일한 이름의 파일에 대한 처리
 		);
-		
+		String blog_file = multi.getFilesystemName("blog_file");
 		// DB 작업을 위한 Service 클래스 인스턴스 생성
 		
 		// 전달받은 데이터를 저장할 BoardBean 객체 생성
