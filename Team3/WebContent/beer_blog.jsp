@@ -1,36 +1,24 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-     <%
-    
-    // ÌòÑÏû¨ ÏÑ∏ÏÖò Í∞ùÏ≤¥Ïóê "sId" ÏÑ∏ÏÖòÍ∞íÏù¥ Ï°¥Ïû¨Ìï† Í≤ΩÏö∞ String ÌÉÄÏûÖ Î≥ÄÏàò sIdÏóê Ï†ÄÏû•(ÏÑ∏ÏÖò id Í∞ÄÏ†∏Ïò¥)
-   // String sId=null;
-    //if(session.getAttribute("sId")!=null){
-    //sId =(String) session.getAttribute("sId");
-    //}
-    
-    %>
-
-
-
+<%@page import="vo.PageInfo"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="vo.BlogBean"%>
+<%@page import="dao.BlogDAO"%>
+<%@page import="static db.JdbcUtil.*"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+	ArrayList<BlogBean> articleList = (ArrayList)request.getAttribute("articleList");
+	PageInfo pageInfo = (PageInfo) request.getAttribute("pageInfo");
+	// "pageInfo" ∞¥√º∑Œ∫Œ≈Õ ∆‰¿Ã¡ˆ ∞¸∑√ ∞™µÈ¿ª ≤®≥ªº≠ ∫Øºˆø° ¿˙¿Â
+	int nowPage = pageInfo.getPage();
+	int maxPage = pageInfo.getMaxPage();
+	int startPage = pageInfo.getStartPage();
+	int endPage = pageInfo.getEndPage();
+	int listCount = pageInfo.getListCount();
+%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
- <style type="text/css">
- #blog_write {
-		width: 500px;
-		height: 610px;
- 		border: 1px solid white;
-		margin: auto;
-	}
-
-	#commandCell {
-		text-align: center;
-	}
- 
- 
- 
- </style>
     <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -102,7 +90,7 @@
               </div>
             </li>
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="beer_blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="BlogMain.bl" class="nav-link">Blog</a></li>
 	          <li class="nav-item active"><a href="reservation.html" class="nav-link">Reservation</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
 	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
@@ -123,50 +111,133 @@
         </div>
       </div>
     </div>
-    
-    
-    
-    
-   	<section id="blog_write"> 
- <form action="BlogWritePro.bl" method="post" enctype="multipart/form-data" name="blog_write">
-  <table>
-<!--   <tr> -->
-<!--   <td class="td_left"><label for="board_name" class="btn btn-primary py-2 px-3">Í∏ÄÏì¥Ïù¥</label></td> -->
-<!--   <td class="td_right"><input type="text" name="board_name" id="board_name" required="required" /></td> -->
-<!--   </tr> -->
-  
-  <tr>
-  <td class="td_left"><label for="blog_pass" class="btn btn-primary py-2 px-3">ÎπÑÎ∞ÄÎ≤àÌò∏</label></td>
-  <td class="td_right"><input name="blog_pass" type="password" id ="blog_pass" required="required"/></td>
-  </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_subject" class="btn btn-primary py-2 px-3">Ï†úÎ™©</label></td>
-  <td class="td_right"><input name="blog_subject" type="text" id="blog_subject" required="required"/></td>
-  </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_file" class="btn btn-primary py-2 px-3">ÌååÏùºÏ≤®Î∂Ä</label></td>
-  <td class=" td_right"><input name="blog_file" type="file" id="blog_file" required="required" /></td>
-  </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_content" class="btn btn-primary py-2 px-3">ÎÇ¥Ïö©</label></td>
-  <td><textarea id="blog_content" name="blog_content" cols="45" rows="10" required="required"></textarea></td>
-  </tr>
-  
-  </table>
-  <section id="commandCell">
- <!-- <a href="blog-single.html" class="btn btn-primary py-2 px-3">Îì±Î°ù</a> -->
-<input type="submit" class="btn btn-primary py-2 px-3" value="Îì±Î°ù">&nbsp;&nbsp;
-<input type="reset" class="btn btn-primary py-2 px-3" value="Îã§ÏãúÏì∞Í∏∞">
-<a href="beer_blog.html" class="btn btn-primary py-2 px-3">Îí§Î°ú</a>
+   	<%
 
-  </section>
-    </form>
-    </section>
-    
-    
+					if(articleList!=null&&listCount>0) {
+					for(int i=0;i<articleList.size();i++) {
+			
+		
+
+		              	
+		              	
+						%>
+    <section class="ftco-section ftco-degree-bg">
+<!-- 	<p><a href="#" class="btn btn-primary py-2 px-3" id="write_btn">±€æ≤±‚</a></p> -->
+      <div class="container">
+        <div class="row">
+				<div class="col-lg-8 ftco-animate">
+					<div class="row">
+<%-- 				<a href="BlogDetail.bl"><img src="../blogUpload/<%=articleList.getBlog_file()%>" --%>
+<!-- 							class="block-20" width="150" height="150"></img></a> -->
+						<div class="text d-block pl-md-4">
+							<div class="meta mb-3">
+								<span><%=articleList.get(i).getBlog_date()%></span>
+								<span>
+									<a href="#">Admin</a>
+								</span>
+								<span>
+									<a href="#" class="meta-chat"><span class="icon-chat"></span>
+										3</a>
+								</span>
+							</div>
+				<a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>"><h3 class="heading"><%=articleList.get(i).getBlog_subject() %></h3></a>			
+			<a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>"><div><%=articleList.get(i).getBlog_content() %></div></a>
+							 <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+						</div>
+					</div>
+				</div>
+				<%
+		              		}
+		              	}
+             		 	%> 
+<!-- 		          </div> -->
+<!-- 						</div> -->
+          <div class="col-lg-4 sidebar ftco-animate">
+            <div class="sidebar-box">
+              <form action="#" method="get" class="search-form">
+                <div class="form-group">
+                  <span class="icon ion-ios-search"></span>
+                  <input type="text" class="form-control" placeholder="Search...">
+                </div>
+                 <span></span>
+                 <span></span>
+                 <br>
+              <p><a href="BlogWriteForm.bl" class="btn btn-primary py-2 px-3" id="write_btn">∫Ì∑Œ±◊ø° ±€ ø√∏Æ±‚</a></p>
+              </form>
+            </div>
+<!--           </div> .col-md-8 -->
+<!--             <div class="sidebar-box ftco-animate"> -->
+<!--             	<h3 class="heading">Categories</h3> -->
+<!--               <ul class="categories"> -->
+<!--                 <li><a href="#">Vegetables <span>(12)</span></a></li> -->
+<!--                 <li><a href="#">Fruits <span>(22)</span></a></li> -->
+<!--                 <li><a href="#">Juice <span>(37)</span></a></li> -->
+<!--                 <li><a href="#">Dries <span>(42)</span></a></li> -->
+<!--               </ul> -->
+<!--             </div> -->
+
+         
+            <div class="sidebar-box ftco-animate">
+              <h3 class="heading">Recent Blog</h3>
+              <div class="block-21 mb-4 d-flex">
+                <a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
+                <div class="text">
+                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <div class="meta">
+                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="block-21 mb-4 d-flex">
+                <a class="blog-img mr-4" style="background-image: url(images/image_2.jpg);"></a>
+                <div class="text">
+                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <div class="meta">
+                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="block-21 mb-4 d-flex">
+                <a class="blog-img mr-4" style="background-image: url(images/image_3.jpg);"></a>
+                <div class="text">
+                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <div class="meta">
+                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-box ftco-animate">
+              <h3 class="heading">Tag Cloud</h3>
+              <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">fruits</a>
+                <a href="#" class="tag-cloud-link">tomatoe</a>
+                <a href="#" class="tag-cloud-link">mango</a>
+                <a href="#" class="tag-cloud-link">apple</a>
+                <a href="#" class="tag-cloud-link">carrots</a>
+                <a href="#" class="tag-cloud-link">orange</a>
+                <a href="#" class="tag-cloud-link">pepper</a>
+                <a href="#" class="tag-cloud-link">eggplant</a>
+              </div>
+            </div>
+
+            <div class="sidebar-box ftco-animate">
+              <h3 class="heading">Paragraph</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section> <!-- .section -->
+
     <footer class="ftco-footer ftco-section bg-light">
       <div class="container">
       	<div class="row">

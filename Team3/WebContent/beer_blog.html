@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -138,6 +139,19 @@
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
+		              	
+		              	<%
+							int num = Integer.parseInt(request.getParameter("blog_num"));
+<!-- 							String pageNum = request.getParameter("pageNum"); -->
+							GalleyDAO gdao = new GalleyDAO();
+							gdao.updateReadCount(num);
+							GalleyBean gb = gdao.getContent(num);
+							// content   엔터키 "\r\n" => "<br>"
+							String content=gb.getContent();
+								if(content!=null){
+								content=content.replace("\r\n","<br>");
+						}
+						%>
 		                  <div><a href="#">July 20, 2019</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
@@ -209,7 +223,7 @@
                  <span></span>
                  <span></span>
                  <br>
-              <p><a href="blog_write.jsp" class="btn btn-primary py-2 px-3" id="write_btn">블로그에 글 올리기</a></p>
+              <p><a href="BlogWriteForm.bl" class="btn btn-primary py-2 px-3" id="write_btn">블로그에 글 올리기</a></p>
               </form>
             </div>
 <!--             <div class="sidebar-box ftco-animate"> -->

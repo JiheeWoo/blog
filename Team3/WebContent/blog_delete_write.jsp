@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%
@@ -8,7 +7,8 @@
     //if(session.getAttribute("sId")!=null){
     //sId =(String) session.getAttribute("sId");
     //}
-    
+    int blog_num = Integer.parseInt(request.getParameter("blog_num"));
+    String nowPage = request.getParameter("page");
     %>
 
 
@@ -17,7 +17,7 @@
 <html lang="en">
   <head>
  <style type="text/css">
- #blog_write {
+ #blog_delete_write {
 		width: 500px;
 		height: 610px;
  		border: 1px solid white;
@@ -102,7 +102,7 @@
               </div>
             </li>
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="beer_blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href=beer_blog.jsp class="nav-link">Blog</a></li>
 	          <li class="nav-item active"><a href="reservation.html" class="nav-link">Reservation</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
 	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
@@ -126,41 +126,28 @@
     
     
     
-    
-   	<section id="blog_write"> 
- <form action="BlogWritePro.bl" method="post" enctype="multipart/form-data" name="blog_write">
+<!--    enctype="multipart/form-data"  -->
+   	<section id="blog_delete_write"> 
+ <form name="deleteForm" action="BlogDeletePro.bl?blog_num=<%=blog_num %>&page=<%=nowPage %>" method="post"  name="blog_delete_write">
   <table>
+ 
 <!--   <tr> -->
-<!--   <td class="td_left"><label for="board_name" class="btn btn-primary py-2 px-3">글쓴이</label></td> -->
-<!--   <td class="td_right"><input type="text" name="board_name" id="board_name" required="required" /></td> -->
+<!--   <td class="td_left"><label for="board_id" class="btn btn-primary py-2 px-3">아이디</label></td> -->
+<!--   <td class="td_right"><input name="board_id" type="id" id ="board_id" required="required"/></td> -->
 <!--   </tr> -->
   
   <tr>
   <td class="td_left"><label for="blog_pass" class="btn btn-primary py-2 px-3">비밀번호</label></td>
   <td class="td_right"><input name="blog_pass" type="password" id ="blog_pass" required="required"/></td>
   </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_subject" class="btn btn-primary py-2 px-3">제목</label></td>
-  <td class="td_right"><input name="blog_subject" type="text" id="blog_subject" required="required"/></td>
-  </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_file" class="btn btn-primary py-2 px-3">파일첨부</label></td>
-  <td class=" td_right"><input name="blog_file" type="file" id="blog_file" required="required" /></td>
-  </tr>
-  
-  <tr>
-  <td class="td_left"><label for="blog_content" class="btn btn-primary py-2 px-3">내용</label></td>
-  <td><textarea id="blog_content" name="blog_content" cols="45" rows="10" required="required"></textarea></td>
-  </tr>
-  
   </table>
   <section id="commandCell">
- <!-- <a href="blog-single.html" class="btn btn-primary py-2 px-3">등록</a> -->
-<input type="submit" class="btn btn-primary py-2 px-3" value="등록">&nbsp;&nbsp;
-<input type="reset" class="btn btn-primary py-2 px-3" value="다시쓰기">
-<a href="beer_blog.html" class="btn btn-primary py-2 px-3">뒤로</a>
+  
+ 
+<!--  <a href="beer_blog.html" class="btn btn-primary py-2 px-3">삭제</a> -->
+ <input type="submit" value="삭제" class="btn btn-primary py-2 px-3" />&nbsp;&nbsp;
+ <input type="button" value="뒤로" class="btn btn-primary py-2 px-3" onclick="history.go(-1)" />
+<!-- <a href="beer_blog.html" class="btn btn-primary py-2 px-3">뒤로</a> -->
 
   </section>
     </form>

@@ -1,4 +1,4 @@
-
+<%@page import="vo.BlogBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%
@@ -8,16 +8,24 @@
     //if(session.getAttribute("sId")!=null){
     //sId =(String) session.getAttribute("sId");
     //}
+	String nowPage = (String)request.getParameter("page");
+	BlogBean article = (BlogBean)request.getAttribute("article");
+%>  
     
-    %>
+  
 
 
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
+<script type="text/javascript">
+function modifyboard() {
+	blog_modify_write.submit();
+}
+</script>
  <style type="text/css">
- #blog_write {
+ #blog_modify_write {
 		width: 500px;
 		height: 610px;
  		border: 1px solid white;
@@ -102,7 +110,7 @@
               </div>
             </li>
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="beer_blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="beer_blog.jsp" class="nav-link">Blog</a></li>
 	          <li class="nav-item active"><a href="reservation.html" class="nav-link">Reservation</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
 	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
@@ -127,13 +135,15 @@
     
     
     
-   	<section id="blog_write"> 
- <form action="BlogWritePro.bl" method="post" enctype="multipart/form-data" name="blog_write">
+   	<section id="blog_modify_write"> 
+<form action="BlogModifyPro.bl" method="post" name="blog_modify_write">
+<input type="text" name="blog_num" value="<%=article.getBlog_num()%>"/>
+<input type="text" name="page" value="<%=nowPage %>" />
   <table>
-<!--   <tr> -->
-<!--   <td class="td_left"><label for="board_name" class="btn btn-primary py-2 px-3">글쓴이</label></td> -->
-<!--   <td class="td_right"><input type="text" name="board_name" id="board_name" required="required" /></td> -->
-<!--   </tr> -->
+  <tr>
+  <td class="td_left"><label for="blog_num" class="btn btn-primary py-2 px-3">글번호</label></td>
+  <td class="td_right"><input type="text" name="blog_num" id="blog_num" required="required" value=<%=article.getBlog_num() %> /></td>
+  </tr>
   
   <tr>
   <td class="td_left"><label for="blog_pass" class="btn btn-primary py-2 px-3">비밀번호</label></td>
@@ -142,25 +152,23 @@
   
   <tr>
   <td class="td_left"><label for="blog_subject" class="btn btn-primary py-2 px-3">제목</label></td>
-  <td class="td_right"><input name="blog_subject" type="text" id="blog_subject" required="required"/></td>
+  <td class="td_right"><input name="blog_subject" type="text" id="blog_subject" required="required" value=<%=article.getBlog_subject() %>/></td>
   </tr>
   
   <tr>
   <td class="td_left"><label for="blog_file" class="btn btn-primary py-2 px-3">파일첨부</label></td>
-  <td class=" td_right"><input name="blog_file" type="file" id="blog_file" required="required" /></td>
+<%--   <td class=" td_right"><input name="blog_file" type="file" id="blog_file" required="required" value=<%=article.getBlog_file() %> /></td> --%>
   </tr>
   
   <tr>
   <td class="td_left"><label for="blog_content" class="btn btn-primary py-2 px-3">내용</label></td>
-  <td><textarea id="blog_content" name="blog_content" cols="45" rows="10" required="required"></textarea></td>
+  <td><textarea id="blog_content" name="blog_content" cols="45" rows="10" required="required" ><%=article.getBlog_content() %></textarea></td>
   </tr>
   
   </table>
   <section id="commandCell">
- <!-- <a href="blog-single.html" class="btn btn-primary py-2 px-3">등록</a> -->
-<input type="submit" class="btn btn-primary py-2 px-3" value="등록">&nbsp;&nbsp;
-<input type="reset" class="btn btn-primary py-2 px-3" value="다시쓰기">
-<a href="beer_blog.html" class="btn btn-primary py-2 px-3">뒤로</a>
+ <input type="submit" value="수정" class="btn btn-primary py-2 px-3">&nbsp;&nbsp;
+<input type="button" value="뒤로" class="btn btn-primary py-2 px-3" onclick="history.back()">
 
   </section>
     </form>
@@ -266,3 +274,4 @@
     
   </body>
 </html>
+
