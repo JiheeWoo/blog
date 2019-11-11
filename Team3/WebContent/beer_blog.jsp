@@ -127,9 +127,9 @@
         <div class="row">
 				<div class="col-lg-8 ftco-animate">
 					<div class="row">
-<%-- 				<a href="BlogDetail.bl"><img src="../blogUpload/<%=articleList.getBlog_file()%>" --%>
-<!-- 							class="block-20" width="150" height="150"></img></a> -->
 						<div class="text d-block pl-md-4">
+<%-- 				<a href="BlogDetail.bl?blog_num="<%=articleList.get(i).getBlog_num() %>><img src="../blogUpload/<%=articleList.getBlog_file()%>" --%>
+<!-- 							class="block-20" width="150" height="150"></img></a> -->
 							<div class="meta mb-3">
 								<span><%=articleList.get(i).getBlog_date()%></span>
 								<span>
