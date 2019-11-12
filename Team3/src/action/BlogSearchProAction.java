@@ -20,16 +20,14 @@ public class BlogSearchProAction implements Action {
 //		int count = blogSearchProService.getBlogCount(search);
 		
 		
-//			if(count<0) {	// ÀÛ¾÷ ½ÇÇà °á°ú(isWriteSuccess)°¡ false ÀÏ °æ¿ì
+//			if(count<0) {	
 			
 			response.setContentType("text/html; charset=UTF-8");
-			// ÀÚ¹Ù ÄÚµå¸¦ »ç¿ëÇÏ¿© ÅÂ±×³ª ½ºÅ©¸³Æ® µîÀ» Àü¼ÛÇÏ·Á¸é PrintWriter °´Ã¼ ÇÊ¿ä(Ãâ·Â½ºÆ®¸² »ç¿ë)
 			
 			
-			PrintWriter out = response.getWriter();	// response °´Ã¼·ÎºÎÅÍ PrintWriter °´Ã¼ ¾ò¾î¿À±â
-			// PrintWriter °´Ã¼ÀÇ println() ¸Þ¼­µå¸¦ »ç¿ëÇÏ¿© ÀÚ¹Ù½ºÅ©¸³Æ® ÀÛ¼º => ¹®ÀÚ¿­ ÇüÅÂ·Î ÀÛ¼º
+			PrintWriter out = response.getWriter();	
 			out.println("<script>");
-			out.println("alert('Ã£À¸½Ã´Â Á¤º¸°¡ ¾ø½À´Ï´Ù')");
+			out.println("alert('ê²€ìƒ‰')");
 			out.println("history.back();");
 			out.println("</script>");
 //		}

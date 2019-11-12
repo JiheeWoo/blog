@@ -26,7 +26,7 @@ public class BlogListAction implements Action {
 		BlogListService blogListService = new BlogListService();
 		
 		int listCount = blogListService.getListCount();
-		System.out.println("ÃÑ °Ô½Ã¹° ¼ö : " + listCount);
+		System.out.println("ì´ ê²Œì‹œë¬¼ ìˆ˜ : " + listCount);
 		
 		ArrayList<BlogBean> articleList = new ArrayList<BlogBean>();
 		articleList = blogListService.getArticleList(page,limit);

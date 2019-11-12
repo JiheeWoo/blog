@@ -128,21 +128,24 @@
 				<div class="col-lg-8 ftco-animate">
 					<div class="row">
 						<div class="text d-block pl-md-4">
-<%-- 				<a href="BlogDetail.bl?blog_num="<%=articleList.get(i).getBlog_num() %>><img src="../blogUpload/<%=articleList.getBlog_file()%>" --%>
-<!-- 							class="block-20" width="150" height="150"></img></a> -->
 							<div class="meta mb-3">
+<%--							<a href="BlogDetail.bl?blog_num= <%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>"> --%>
+<%-- 				<img src="blogUpload/${blog.blog_file}" --%>
+<!-- 							class="block-20" width="150" height="150"></img></a> -->
+<a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>">
+<img src="./blogUpload/<%=articleList.get(i).getBlog_file()%>" alt="" width="200" height="200"></a>
+<%-- 								<%=articleList.get(i).getBlog_file() %> --%>
 								<span><%=articleList.get(i).getBlog_date()%></span>
 								<span>
 									<a href="#">Admin</a>
 								</span>
 								<span>
-									<a href="#" class="meta-chat"><span class="icon-chat"></span>
-										3</a>
+									<a href="#" class="meta-chat"><span class="icon-chat"><%=articleList.get(i).getReadcount() %></span></a>
 								</span>
 							</div>
 				<a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>"><h3 class="heading"><%=articleList.get(i).getBlog_subject() %></h3></a>			
 			<a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>"><div><%=articleList.get(i).getBlog_content() %></div></a>
-							 <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+							 <p><a href="BlogDetail.bl?blog_num=<%=articleList.get(i).getBlog_num() %>&page=<%=nowPage %>" class="btn btn-primary py-2 px-3">Read more</a></p>
 						</div>
 					</div>
 				</div>
@@ -164,6 +167,24 @@
                  <br>
               <p><a href="BlogWriteForm.bl" class="btn btn-primary py-2 px-3" id="write_btn">블로그에 글 올리기</a></p>
               </form>
+              <%if(nowPage<=1) {%>
+						[이전]&nbsp;
+				<%} else { %>
+				<a href="./BlogList.bl?page=<%=nowPage-1 %>">[이전]</a>&nbsp;
+				<%} %>
+
+				<%for(int a=startPage;a<=endPage;a++) {
+				if(a==nowPage) {%>
+				[<%=a %>]
+				<%} else { %>
+				<a href="./BlogList.bl?page=<%=a %>">[<%=a %>]</a>&nbsp;
+				<%} }%>
+
+				<%if(nowPage>=maxPage) {%>
+<!-- 				[다음] -->
+				<%} else { %>
+				<a href="./BlogList.bl?page=<%=nowPage+1 %>">[다음]</a>
+				<%}  %>
             </div>
 <!--           </div> .col-md-8 -->
 <!--             <div class="sidebar-box ftco-animate"> -->

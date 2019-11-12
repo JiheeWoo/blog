@@ -1,5 +1,6 @@
 package action;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +23,9 @@ public class BlogDetailAction implements Action {
 		
 		request.setAttribute("page", nowPage);
 		request.setAttribute("article", blogBean);
-		
+//		Cookie todayImageCookie = new Cookie("today"+blog_num, blogBean.getBlog_file());
+//		todayImageCookie.setMaxAge(60*60*24);
+//		response.addCookie(todayImageCookie);
 		ActionForward forward = null;
 		forward = new ActionForward();
 		forward.setRedirect(false);

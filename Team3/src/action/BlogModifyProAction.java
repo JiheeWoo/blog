@@ -22,11 +22,10 @@ public class BlogModifyProAction implements Action {
 		BlogModifyProService blogModifyProService = new BlogModifyProService();
 		boolean isRightUser = blogModifyProService.isArticleWriter(blog_num,blog_pass);
 		if(!isRightUser) {
-//			System.out.println("ÆĞ½º¿öµå Æ²¸²");
 			response.setContentType("text/html; charset=UTF-8"); 
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('¼öÁ¤±ÇÇÑÀÌ ¾ø½À´Ï´Ù!')");
+			out.println("alert('ìˆ˜ì • ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤!')");
 			out.println("history.back();");
 			out.println("</script>");
 		} else {
@@ -39,7 +38,7 @@ public class BlogModifyProAction implements Action {
 				response.setContentType("text/html; charset=UTF-8"); 
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('±Û ¼öÁ¤ ½ÇÆĞ!')");
+				out.println("alert('ê²Œì‹œë¬¼ ìˆ˜ì • ì‹¤íŒ¨!')");
 				out.println("history.back();");
 				out.println("</script>");
 			} else {

@@ -12,19 +12,12 @@ import vo.BlogBean;
 import static db.JdbcUtil.*;
 
 public class BlogDAO {
-	// ------------ ½Ì±ÛÅæ µğÀÚÀÎ ÆĞÅÏÀ» È°¿ëÇÑ BlogDAO ÀÎ½ºÅÏ½º ÀÛ¾÷ ---------------
-	// 1. ÀÎ½ºÅÏ½º »ı¼º ºÒ°¡´ÉÇÏµµ·Ï »ı¼ºÀÚ private ¼±¾ğ
-	// 2. Á÷Á¢ ÀÎ½ºÅÏ½º¸¦ »ı¼ºÇÏ¿© ÀúÀå(3¹ø¿¡¼­ ÀÎ½ºÅÏ½º°¡ ¾øÀ» ¶§ Á÷Á¢ »ı¼ºÇØµµ µÊ)
-	// 3. Getter »ç¿ëÇÏ¿© »ı¼ºÇÑ ÀÎ½ºÅÏ½º¸¦ ¿ÜºÎ·Î ¸®ÅÏ
-	// 4. 3¹ø ¸Ş¼­µå¸¦ ÀÎ½ºÅÏ½º »ı¼º¾øÀÌ È£ÃâÇØ¾ßÇÏ¹Ç·Î static À¸·Î ¼±¾ğ
-	//    => ÀÌ ¶§, 2¹øÀÇ º¯¼öµµ static À¸·Î ¼±¾ğÇØ¾ßÇÔ
-	// 5. 2¹øÀÇ º¯¼öµµ ¿ÜºÎ¿¡¼­ Á¢±ÙÀÌ ºÒ°¡´ÉÇÏµµ·Ï private ¼±¾ğ
+	
 	private BlogDAO() {}
 	
 	private static BlogDAO instance;
 
 	public static BlogDAO getInstance() {
-		// ±âÁ¸ÀÇ ÀÎ½ºÅÏ½º°¡ instance º¯¼ö¿¡ ÀúÀåµÇ¾î ÀÖÁö ¾ÊÀ» °æ¿ì(null ÀÏ °æ¿ì) »ı¼ºÇÏ¿© ¸®ÅÏ
 		if(instance == null) {
 			instance = new BlogDAO();
 		}
@@ -36,12 +29,10 @@ public class BlogDAO {
 	Connection con;
 	
 	public void setConnection(Connection con) {
-		// Service Å¬·¡½º·ÎºÎÅÍ Connection °´Ã¼¸¦ Àü´Ş¹Ş¾Æ ¸â¹öº¯¼ö¿¡ ÀúÀå
 		this.con = con;
 	}
 
 	public int insertArticle(BlogBean blogBean) {
-		// Service Å¬·¡½º·ÎºÎÅÍ BlogBean °´Ã¼¸¦ Àü´Ş¹Ş¾Æ DB ¿¡ INSERT ÀÛ¾÷À» ¼öÇàÇÑ ÈÄ °á°ú(intÅ¸ÀÔ) ¸®ÅÏ
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 				
@@ -49,42 +40,32 @@ public class BlogDAO {
 		int insertCount = 0;
 		
 		try {
-			// ÇöÀç °Ô½Ã¹°ÀÇ ÃÖ´ë ¹øÈ£¸¦ Á¶È¸ÇÏ¿© »õ·Î¿î ±Û¹øÈ£¸¦ °áÁ¤(+1)
-			String sql = "SELECT MAX(blog_num) FROM blog"; // °¡Àå Å« ¹øÈ£ Á¶È¸
+			String sql = "SELECT MAX(blog_num) FROM blog"; 
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) { // µî·ÏµÈ °Ô½Ã¹°ÀÌ ÇÏ³ª¶óµµ Á¸ÀçÇÒ °æ¿ì
-				num = rs.getInt(1) + 1; // »õ ±Û ¹øÈ£ = ÇöÀç °Ô½Ã¹° °¡Àå Å« ¹øÈ£ + 1
-			} else { // µî·ÏµÈ °Ô½Ã¹°ÀÌ ÇÏ³ªµµ ¾øÀ» °æ¿ì
-				num = 1; // »õ ±Û ¹øÈ£ = 1
+			if(rs.next()) { 
+				num = rs.getInt(1) + 1; 
+			} else {
+				num = 1; 
 			}
 			
-			// Àü´Ş¹ŞÀº µ¥ÀÌÅÍ¸¦ »ç¿ëÇÏ¿© INSERT ÀÛ¾÷ ¼öÇà
-			// => ¸¶Áö¸· ÇÊµåÀÎ blog_date(°Ô½Ã¹° ÀÛ¼ºÀÏ) ´Â µ¥ÀÌÅÍº£ÀÌ½º now() ÇÔ¼ö »ç¿ëÇÏ¿© ÇöÀç ½Ã°¢ »ç¿ë
 			sql = "INSERT INTO blog VALUES(?,?,?,?,?,?,now())";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
-//			pstmt.setString(2, BlogBean.getBlog_name());
 			pstmt.setString(2, blogBean.getBlog_pass());
 			pstmt.setString(3, blogBean.getBlog_subject());
 			pstmt.setString(4, blogBean.getBlog_content());
 			pstmt.setString(5, blogBean.getBlog_file());
-//			pstmt.setInt(7, num);
-//			pstmt.setInt(8, BlogBean.getblog_re_lev());
-//			pstmt.setInt(9, BlogBean.getblog_re_seq());
 			pstmt.setInt(6, blogBean.getReadcount());
 			
-			insertCount = pstmt.executeUpdate(); // INSERT ½ÇÇà °á°ú °ªÀ» intÇü º¯¼ö·Î ÀúÀå
+			insertCount = pstmt.executeUpdate(); 
 			
 		} catch (SQLException e) {
-//			e.printStackTrace();
-			System.out.println("insertArticle() ¿À·ù - " + e.getMessage());
+			System.out.println("insertArticle() ì—ì„œ ì˜¤ë¥˜ - " + e.getMessage());
 		} finally {
 			close(rs);
 			close(pstmt);
-//			close(con); // ÁÖÀÇ!! DAO ³»¿¡¼­ Connection °´Ã¼¸¦ ´İÁö ¾Êµµ·Ï ÁÖÀÇÇÒ °Í!!!!
-			// => Service Å¬·¡½º¿¡¼­ commit, rollback ¿©ºÎ¸¦ °áÁ¤ÇÑ ÈÄ Connection ¿¡ Á¢±ÙÇØ¾ßÇÏ±â ¶§¹®¿¡
 		}
 		
 		return insertCount;
@@ -120,7 +101,7 @@ public class BlogDAO {
 			pstmt.setInt(3, article.getBlog_num());
 			updateCount = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("updateArticle()¿À·ù" + e.getMessage());
+			System.out.println("updateArticle()ì—ì„œ ì˜¤ë¥˜" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
@@ -128,40 +109,7 @@ public class BlogDAO {
 		
 		return updateCount;
 	}
-//	public BlogBean getContent(int blog_num) {		
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		BlogBean blogBean = null;
-//		try {
-//			con = getConnection();
-//			
-//			String sql = "select * from blog where blog_num=?";
-//			pstmt = con.prepareStatement(sql);
-//			pstmt.setInt(1,blog_num);
-//			rs = pstmt.executeQuery();
-//			if(rs.next()) {
-//				blogBean = new BlogBean();
-////				blogBean.setNum(rs.getInt("num"));
-////				blogBean.setName(rs.getString("name"));
-////				blogBean.setPass(rs.getString("pass"));
-//				blogBean.setBlog_subject(rs.getString("blog_subject"));
-//				blogBean.setBlog_content(rs.getString("blog_content"));
-//				blogBean.setBlog_date(rs.getDate("blog_date"));
-//				blogBean.setBlog_file(rs.getString("blog_file"));
-//				blogBean.setReadcount(rs.getInt("readcount"));
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			if(rs!=null) try {rs.close();} catch(SQLException ex) {}
-//			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-//			if(con!=null) try {con.close();}  catch(SQLException ex) {}
-//		}
-//		return blogBean;
-//	}
-	// °Ô½Ã¹° ÆĞ½º¿öµå ÀÏÄ¡ ¿©ºÎ È®ÀÎ
-		public boolean isBlogArticleWriter(int blog_num, String blog_pass) {
+	public boolean isBlogArticleWriter(int blog_num, String blog_pass) {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			boolean isArticleWriter = false;
@@ -201,9 +149,6 @@ public class BlogDAO {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				article = new BlogBean();
-//				blogBean.setNum(rs.getInt("num"));
-//				blogBean.setName(rs.getString("name"));
-//				blogBean.setPass(rs.getString("pass"));
 				article.setBlog_num(rs.getInt("blog_num"));
 				article.setBlog_subject(rs.getString("blog_subject"));
 				article.setBlog_content(rs.getString("blog_content"));
@@ -221,7 +166,6 @@ public class BlogDAO {
 	}
 	
 	public int selectListCount() {
-		//  board Å×ÀÌºíÀÇ ÃÑ °Ô½Ã¹° ¼ö Á¶È¸ÇÏ¿© ¸®ÅÏ
 		int listCount = 0;
 		
 		PreparedStatement pstmt = null;
@@ -232,12 +176,11 @@ public class BlogDAO {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			// Á¶È¸ °á°ú°¡ ÀÖÀ» °æ¿ì(rs.next() °¡ true ÀÏ °æ¿ì) 
 			if(rs.next()) {
 				listCount = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL ±¸¹® ¿À·ù ¹ß»ı : " + e.getMessage());
+			System.out.println("SQL êµ¬ë¬¸ì—ì„œ ì˜¤ë¥˜ : " + e.getMessage());
 		} finally {
 			close(rs);
 			close(pstmt);
@@ -246,14 +189,12 @@ public class BlogDAO {
 			
 	}
 	public ArrayList<BlogBean> selectArticleList(int page, int limit){
-		// ÁöÁ¤µÈ °¹¼ö ¸¸Å­ÀÇ °Ô½Ã¹° Á¶È¸ÇÏ¿© ArrayList °´Ã¼¿¡ ÀúÀåÇÑ µÚ ¸®ÅÏ
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		ArrayList<BlogBean> articleList = new ArrayList<BlogBean>();
 		
 		
-		// Á¶È¸ ½ÃÀÛ °Ô½Ã¹° ¹øÈ£(Çà ¹øÈ£) °è»ê
 		int startRow = (page-1)*10;
 		try {
 		String sql = "SELECT * FROM blog order by blog_num desc LIMIT ?,?";
@@ -261,7 +202,7 @@ public class BlogDAO {
 		pstmt.setInt(1, startRow);
 		pstmt.setInt(2,limit);
 		rs = pstmt.executeQuery();
-		// ÀĞ¾î¿Ã °Ô½Ã¹°ÀÌ Á¸ÀçÇÒ °æ¿ì
+
 		while(rs.next()) {
 			BlogBean blogBean = new BlogBean();
 			blogBean.setBlog_num(rs.getInt("blog_num"));
@@ -275,7 +216,7 @@ public class BlogDAO {
 		}
 		
 		} catch(SQLException e) {
-		System.out.println("selectArticleList() ¿À·ù : " + e.getMessage());
+		System.out.println("selectArticleList() ì—ì„œ ì˜¤ë¥˜ : " + e.getMessage());
 		} finally {
 		close(rs);
 		close(pstmt);
@@ -299,7 +240,7 @@ public class BlogDAO {
 //			rs = pstmt.executeQuery();				
 //			
 //			while(rs.next()) {
-//				// ÇÑ »ç¶÷ÀÇ Á¤º¸ ÀúÀå(while¹® ¾È¿¡ MemberBean °´Ã¼ »ı¼º)
+//				// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(whileï¿½ï¿½ ï¿½È¿ï¿½ MemberBean ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½)
 //				BoardBean bb = new BoardBean();
 //				bb.setNum(rs.getInt("num"));
 //				bb.setSubject(rs.getString("subject"));
@@ -310,13 +251,13 @@ public class BlogDAO {
 //				bb.setRe_ref(rs.getInt("re_ref"));
 //				bb.setRe_lev(rs.getInt("re_lev"));
 //				bb.setRe_seq(rs.getInt("re_seq"));
-//				// ¹è¿­ ÇÑÄ­¿¡ ÇÑ»ç¶÷ÀÇ Á¤º¸ÀúÀå
-//				boardList.add(bb);	//add ÇÏ¸é ¼ø¼­´ë·Î ÀúÀå!!
+//				// ï¿½è¿­ ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½Ñ»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//				boardList.add(bb);	//add ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!!
 //			}
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		} finally {
-//			//¸¶¹«¸® ÀÛ¾÷
+//			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½
 //			if(rs!=null) try {rs.close();} catch(SQLException ex) {}
 //			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
 //			if(con!=null) try {con.close();}  catch(SQLException ex) {}
@@ -340,7 +281,7 @@ public class BlogDAO {
 //			rs = pstmt.executeQuery();				
 //			
 //			while(rs.next()) {
-//				// ÇÑ »ç¶÷ÀÇ Á¤º¸ ÀúÀå(while¹® ¾È¿¡ MemberBean °´Ã¼ »ı¼º)
+//				// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(whileï¿½ï¿½ ï¿½È¿ï¿½ MemberBean ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½)
 //				BoardBean bb = new BoardBean();
 //				bb.setNum(rs.getInt("num"));
 //				bb.setSubject(rs.getString("subject"));
@@ -351,41 +292,30 @@ public class BlogDAO {
 //				bb.setRe_ref(rs.getInt("re_ref"));
 //				bb.setRe_lev(rs.getInt("re_lev"));
 //				bb.setRe_seq(rs.getInt("re_seq"));
-//				// ¹è¿­ ÇÑÄ­¿¡ ÇÑ»ç¶÷ÀÇ Á¤º¸ÀúÀå
-//				boardList.add(bb);	//add ÇÏ¸é ¼ø¼­´ë·Î ÀúÀå!!
+//				// ï¿½è¿­ ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½Ñ»ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//				boardList.add(bb);	//add ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!!
 //			}
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		} finally {
-//			//¸¶¹«¸® ÀÛ¾÷
 //			if(rs!=null) try {rs.close();} catch(SQLException ex) {}
 //			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
 //			if(con!=null) try {con.close();}  catch(SQLException ex) {}
 //		}
 //		return boardList;
 //	}
-	public int updateReadCount(int blog_num) {
+	public int updateReadCount(int blog_num){
 		int updateCount = 0;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = "select readcount from blog where blog_num=?";
-		int readcount = 0;
 	try {
+		String sql = "update blog set readcount=readcount+1 where blog_num=?";
 		pstmt = con.prepareStatement(sql);
-		rs = pstmt.executeQuery();
-		if(rs.next()) {
-			readcount = rs.getInt("readcount");
-		}
-		sql = "update blog set readcount=? where blog_num=?";
-		// 4´Ü°è ½ÇÇà
-		pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1,readcount+1);
-		pstmt.setInt(2, blog_num);
-		pstmt.executeUpdate();
+		pstmt.setInt(1, blog_num);
+		updateCount=pstmt.executeUpdate();
 		
 		
 	} catch (Exception e) {
-		System.out.println("updateReadCount ¿¡¼­ ¿À·ù" + e.getMessage());
+		System.out.println("updateReadCount ì—ì„œ ì˜¤ë¥˜" + e.getMessage());
 		e.printStackTrace();
 	} finally {
 		if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}

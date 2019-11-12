@@ -21,71 +21,56 @@ public class BlogWriteProAction implements Action {
 		ActionForward forward = null;
 		
 		
-		// °Ô½ÃÆÇ ±Û¾²±â ¹öÆ°À» ´­·¯ ÀÛ¼ºÇÑ °Ô½Ã¹° ³»¿ë
-//		(board_name, board_pass, board_subject, board_content, board_file °¡Á®¿À±â)
-		// import
 		BlogBean blogBean = null;
-		String realFolder = "";	// ¾÷·Îµå ÇÒ ÆÄÀÏÀÌ ÀúÀåµÇ´Â ½ÇÁ¦ °æ·Î
-		String saveFolder = "/blogUpload";	// ¾÷·Îµå ÇÒ ÆÄÀÏÀÌ ÀúÀåµÇ´Â °¡»ó °æ·Î => ÀÌÅ¬¸³½º¿¡¼­ º¸ÀÌ´Â Æú´õ ±¸Á¶
-		int fileSize = 10 * 1024 * 1024;	// 10M Å©±â ÁöÁ¤
+		String realFolder = "";	
+		String saveFolder = "/blogUpload";	
+		int fileSize = 10 * 1024 * 1024;	
 //		MultipartRequest multi = 
 //				new MultipartRequest(request,saveFolder,fileSize,"utf-8",new DefaultFileRenamePolicy());	
 		
 		
 		ServletContext context = request.getServletContext();
-		realFolder = context.getRealPath(saveFolder); // ÇÁ·ÎÁ§Æ® »óÀÇ °¡»óÆú´õ¸¦ ±âÁØÀ¸·Î ½ÇÁ¦ °æ·Î ¾Ë¾Æ³»±â
+		realFolder = context.getRealPath(saveFolder); 
 //		System.out.println(realFolder);
 		
-		// ÆÄÀÏ ¾÷·Îµå Ã³¸®¸¦ À§ÇØ MultiPartRequest °´Ã¼ »ı¼º => cos.jar ÇÊ¿ä
+		// cos.jar 
 		MultipartRequest multi = new MultipartRequest(
-				request,	// request °´Ã¼
-				realFolder,	// ½ÇÁ¦ ¾÷·Îµå Æú´õ °æ·Î
-				fileSize,	// ÆÄÀÏ Å©±â
-				"UTF-8",	// ÇÑ±Û ÆÄÀÏ¸í¿¡ ´ëÇÑ ÀÎÄÚµù ¹æ½Ä ÁöÁ¤
-				new DefaultFileRenamePolicy()	// µ¿ÀÏÇÑ ÀÌ¸§ÀÇ ÆÄÀÏ¿¡ ´ëÇÑ Ã³¸®
+				request,	
+				realFolder,	
+				fileSize,	
+				"UTF-8",	
+				new DefaultFileRenamePolicy()	
 		);
 		String blog_file = multi.getFilesystemName("blog_file");
-		// DB ÀÛ¾÷À» À§ÇÑ Service Å¬·¡½º ÀÎ½ºÅÏ½º »ı¼º
 		
-		// Àü´Ş¹ŞÀº µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ BoardBean °´Ã¼ »ı¼º
 		blogBean = new BlogBean();
 		blogBean.setBlog_pass(multi.getParameter("blog_pass"));
 		blogBean.setBlog_subject(multi.getParameter("blog_subject"));
 		blogBean.setBlog_content(multi.getParameter("blog_content"));
 		blogBean.setBlog_file(multi.getOriginalFileName((String)multi.getFileNames().nextElement()));
-		// => ÁÖÀÇ! ÆÄÀÏ ÁöÁ¤ ½Ã multi.getParameter("BOARD_FILE"); ÀÌ ¾Æ´Ô
 		
 		BoardWriteProService boardWriteProService = new BoardWriteProService();
 		
-		// BoardWriteProService ÀÎ½ºÅÏ½ºÀÇ registArticle() ¸Ş¼­µå¸¦ È£ÃâÇÏ¿© °Ô½Ã¹° µî·Ï ÀÛ¾÷ Áö½Ã
-		// => ÆÄ¶ó¹ÌÅÍ·Î BoardBean °´Ã¼ Àü´Ş
-		// => boolean Å¸ÀÔÀ¸·Î ½ÇÇà °á°ú ¸®ÅÏ
 		boolean isWriteSuccess = boardWriteProService.registArticle(blogBean);
 		
 		
-		// ÀÚ¹Ù½ºÅ©¸³Æ®¸¦ ÅëÇØ "°Ô½Ã¹° µî·Ï ½ÇÆĞ!" ¸Ş¼¼Áö Ãâ·Â
-		if(!isWriteSuccess) {	// ÀÛ¾÷ ½ÇÇà °á°ú(isWriteSuccess)°¡ false ÀÏ °æ¿ì
+		if(!isWriteSuccess) {	
 			
 			response.setContentType("text/html; charset=UTF-8");
-			// ÀÚ¹Ù ÄÚµå¸¦ »ç¿ëÇÏ¿© ÅÂ±×³ª ½ºÅ©¸³Æ® µîÀ» Àü¼ÛÇÏ·Á¸é PrintWriter °´Ã¼ ÇÊ¿ä(Ãâ·Â½ºÆ®¸² »ç¿ë)
 			
 			
-			PrintWriter out = response.getWriter();	// response °´Ã¼·ÎºÎÅÍ PrintWriter °´Ã¼ ¾ò¾î¿À±â
-			// PrintWriter °´Ã¼ÀÇ println() ¸Ş¼­µå¸¦ »ç¿ëÇÏ¿© ÀÚ¹Ù½ºÅ©¸³Æ® ÀÛ¼º => ¹®ÀÚ¿­ ÇüÅÂ·Î ÀÛ¼º
+			PrintWriter out = response.getWriter();	
 			out.println("<script>");
-			out.println("alert('°Ô½Ã¹° µî·Ï ½ÇÆĞ')");
+			out.println("alert('ê²Œì‹œë¬¼ë“±ë¡ì‹¤íŒ¨!')");
 			out.println("history.back();");
 			out.println("</script>");
-		} else {	// ÀÛ¾÷ ½ÇÇà °á°ú°¡ trueÀÏ °æ¿ì
-			// Æ÷¿öµù Á¤º¸ ÀúÀåÀ» À§ÇÑ ActionForward °´Ã¼¸¦ »ı¼ºÇÏ¿©
-			// Æ÷¿öµùÇÒ °æ·Î¸¦ BoardList.bo·Î ÁöÁ¤ÇÏ°í, Æ÷¿öµù ¹æ½Ä(¸®´ÙÀÌ·ºÆ® ¹æ½Ä)À» Redirect ¹æ½ÄÀ¸·Î ÁöÁ¤
+		} else {	
 			forward = new ActionForward();
 			forward.setPath("BlogList.bl");
-			forward.setRedirect(true);	// Redirect ¹æ½Ä = true, Dispatch ¹æ½Ä = false Àü´Ş
+			forward.setRedirect(true);	
 			
 		}
 		
-		// FrontController ¿¡°Ô ActionForward °´Ã¼ ¸®ÅÏ
 
 		
 		return forward;

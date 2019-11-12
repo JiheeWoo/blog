@@ -18,7 +18,7 @@ public class BlogListService {
 		
 		int listCount = blogDAO.selectListCount();
 		
-		System.out.println("ÃÑ °Ô½Ã¹° ¼ö : " + listCount);
+		System.out.println("ê²Œì‹œë¬¼ ì´ ê°¯ìˆ˜ : " + listCount);
 		close(con);
 		
 		return listCount;

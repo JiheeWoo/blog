@@ -106,8 +106,16 @@
           <div class="col-lg-8 ftco-animate">
 				<h2 class="mb-3"><%= article.getBlog_subject() %></h2>
             <p><%=article.getBlog_content() %></p>
+<%-- 				<a href="BlogDetail.bl?blog_num=<%=article.getBlog_num() %>&page=<%=nowPage %>"><img src="blogUpload/${blog.blog_file}" --%>
+<!-- 							class="block-20" width="150" height="150"></img></a> -->
             <p>
-<!--               <img src="images/image_1.jpg" alt="" class="img-fluid"> -->
+<%--               <img src="blogUpload/${blog.blog_file}" alt="" class="img-fluid"> --%>
+              <%if(!(article.getBlog_file()==null)) {%>
+<%-- 				<a href="./blogUpload/<%=article.getBlog_file()%>"> --%>
+				<img src="./blogUpload/<%=article.getBlog_file()%>" alt="" width="200" height="200">
+<%-- 					<%=article.getBlog_file() %> --%>
+<!-- 				</a> -->
+					<%} %>
             </p>
 <!--             <p>Molestiae cupiditate inventore animi, maxime sapiente optio, illo est nemo veritatis repellat sunt doloribus nesciunt! Minima laborum magni reiciendis qui voluptate quisquam voluptatem soluta illo eum ullam incidunt rem assumenda eveniet eaque sequi deleniti tenetur dolore amet fugit perspiciatis ipsa, odit. Nesciunt dolor minima esse vero ut ea, repudiandae suscipit!</p> -->
 <!--             <h2 class="mb-3 mt-5">#2. Creative WordPress Themes</h2> -->
